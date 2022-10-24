@@ -1,0 +1,56 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon"
+    (click)="drawer.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <button routerLink="/" mat-icon-button>
+    <mat-icon class="white-icon">home</mat-icon>
+  </button>
+  <span>A Form System Architecture Example by NorthWind Database</span>
+  <span class="example-spacer"></span>
+  <button mat-icon-button [matMenuTriggerFor]="menu" class="example-icon favorite-icon"
+    aria-label="Example icon-button with heart icon">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <button *ngIf="authService.isLoggedIn" routerLink="/member/information" mat-menu-item>
+        <mat-icon>perm_identity</mat-icon>
+        <span>Personal Information</span>
+      </button>
+    <button *ngIf="!authService.isLoggedIn" routerLink="/login" mat-menu-item>
+      <mat-icon>account_box</mat-icon>
+      <span>Login</span>
+    </button>
+    <button *ngIf="authService.isLoggedIn" (click)="Logout()" mat-menu-item>
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Logout</span>
+    </button>
+    <button *ngIf="authService.isLoggedIn" routerLink="/member/resetpassword" mat-menu-item>
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Change Password</span>
+    </button>
+    
+    <button *ngIf="!authService.isLoggedIn" routerLink="/regeist" mat-menu-item>
+      <mat-icon>account_box</mat-icon>
+      <span>Regeist</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>
+
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer class="example-sidenav" mode="push">
+    <mat-list  role="list">
+      <mat-list-item *ngIf="authService.isLoggedIn" role="listitem" class="side-list-item" routerLink="/order">
+        <mat-icon>shop_two</mat-icon>Order
+      </mat-list-item>
+      <mat-list-item *ngIf="authService.isLoggedIn" role="listitem" class="side-list-item" routerLink="product">
+        <mat-icon>list_alt</mat-icon>Maintain Products
+      </mat-list-item>
+    </mat-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    {{authService.isLoggedIn}}
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

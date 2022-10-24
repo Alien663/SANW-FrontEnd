@@ -1,0 +1,50 @@
+<mat-accordion multi>
+  <mat-expansion-panel [expanded]="showCondition">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Search Condition
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <form style="width: 100%;" (ngSubmit)="submitForm()">
+      <div class="condition">
+        <label>Order Date</label>
+        <div class="col">
+          <input [matDatepicker]="picker" name="OrderDate" [(ngModel)]="conditions.OrderDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </div>
+        <label for="order-shipper">Shipper</label>
+        <div class="col">
+          <select id="order-shipper" name="Shipper" [(ngModel)]="conditions.Shipper">
+            <option value="0">Choose</option>
+            <option *ngFor="let item of shippers" value={{item.value}}>{{item.name}}</option>
+          </select>
+        </div>
+        <label></label>
+        <div class="col"><button mat-raised-button color="primary" style="float: right;">Query</button></div>
+        <button mat-raised-button color="primary" style="float: right;">Export</button>
+        
+      </div>
+    </form>
+  </mat-expansion-panel>
+  <mat-expansion-panel [expanded]="showResult">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Serch Result
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    
+    <div *ngIf="showTable" style="max-height: 550px;overflow: auto;">
+      <app-base-table [dataSource]="testData" [displayedColumns]="cols"></app-base-table>
+    </div>
+    <mat-paginator *ngIf="showTable" [length]="length"
+              [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions"
+              (page)="onPaginateChange($event)"
+              aria-label="Select page"
+              showFirstLastButtons >
+    </mat-paginator>
+    
+
+  </mat-expansion-panel>
+</mat-accordion>

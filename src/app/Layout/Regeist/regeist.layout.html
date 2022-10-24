@@ -1,0 +1,39 @@
+<div>
+    <mat-list-item>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Account</mat-label>
+        <input matInput required [(ngModel)]="personaldata.account">
+      </mat-form-field>
+    </mat-list-item>
+
+    <mat-list-item>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput required type="password" [(ngModel)]="personaldata.password">
+      </mat-form-field>
+    </mat-list-item>
+
+    <mat-list-item>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Confirm Password</mat-label>
+        <input matInput required type="password" [(ngModel)]="personaldata.confirm_password" >
+      </mat-form-field>
+    </mat-list-item>
+    
+    <mat-list-item>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Nick Name</mat-label>
+          <input matInput required placeholder="Nickl Name" [(ngModel)]="personaldata.nickName" >
+        </mat-form-field>
+    </mat-list-item>
+
+    <mat-list-item>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Email</mat-label>
+          <input type="email" matInput required placeholder="Ex. pat@example.com" [(ngModel)]="personaldata.eMail" >
+      </mat-form-field>
+    </mat-list-item>
+
+    <mat-divider></mat-divider>
+    <button mat-raised-button color="primary" (click)="submitRegeist()">Regeist</button>
+</div>

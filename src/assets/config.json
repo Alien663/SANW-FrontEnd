@@ -1,0 +1,8 @@
+{
+    "Dev": {
+        "apiurl": "http://localhost:59089/api"
+    },
+    "Prop": {
+        "apiurl": "/api"
+    }
+}

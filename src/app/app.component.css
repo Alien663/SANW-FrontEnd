@@ -1,0 +1,57 @@
+.content{
+    height: 100%;
+    display: flex;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+    margin-top: 15px;
+}
+
+body{
+    font-size: 12px;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+
+a,
+a:link,
+a:visited {
+    color: black;
+    text-decoration: none
+}
+
+a:hover {
+    color: black;
+    background-color: #FFECD9;
+    text-decoration: none;
+}
+
+.white-icon {
+    color: white;
+}
+/* Note: If you're using an SVG icon, you should make the class target the `<svg>` element */
+.white-icon svg {
+    fill: white;
+}
+
+
+.example-container{
+    height: 90vh;
+}
+.example-sidenav {
+    width: 15vw;
+}
+
+.side-list-item:hover {
+    background-color: rgb(223, 223, 223);
+}
+
+mat-drawer-content{
+    width: 70%;
+    margin: 0 auto;
+}

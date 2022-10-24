@@ -1,0 +1,11 @@
+<form>
+    <div *ngFor="let item of formsdata">
+        <mat-form-field class="example-full-width" appearance="fill" style="width: 100%">
+            <mat-label>{{item.name}}</mat-label>
+            <input matInput placeholder="{{item.name}}" name="{{item.name}}" ngModel value="={{item.value}}">
+        </mat-form-field>
+    </div>
+
+    <button mat-raised-button color="primary" *ngFor="let btn of btnNames">{{ btn }}</button>
+    
+</form>
