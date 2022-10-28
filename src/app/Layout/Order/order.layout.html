@@ -21,8 +21,10 @@
           </select>
         </div>
         <label></label>
-        <div class="col"><button mat-raised-button color="primary" style="float: right;">Query</button></div>
-        <button mat-raised-button color="primary" style="float: right;">Export</button>
+        <div class="col">
+          <button mat-raised-button color="primary" style="float: right;">Query</button>
+        </div>
+        <button mat-raised-button color="primary" type="button" style="float: right;" (click)="submitDownloadFile()">Export</button>
         
       </div>
     </form>

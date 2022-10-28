@@ -1,16 +1,15 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { isDevMode } from '@angular/core';
 import { Injectable } from '@angular/core'
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 
 @Injectable()
 export class APIService {
-    constructor(private http: HttpClient) { }
-
+    constructor(private http: HttpClient) {}
+    apiurl =  isDevMode() ? "http://localhost:59089/api" : "/api"
     callAPI(path: string, method: "GET" | "POST" | "PUT" | "DELETE", reqdata?: any, header?: { [header: string]: string | string[] }, filelist: any = []) {
-        const apiurl = isDevMode() ? "http://localhost:59089/api" : "/api";
         let reqParams = new HttpParams();
         if(method === "GET" && reqdata.length > 0){
             reqdata.forEach( (item : any) => {
@@ -18,11 +17,12 @@ export class APIService {
                 reqParams.set(keyname, item[keyname])
             });
         }
-
-        let url = `${apiurl}/${path}`
+        if(!header){
+            header = {'Content-Type': 'application/json'}
+        }
+        let url = `${this.apiurl}/${path}`
         let option = {
             headers: {
-                'Content-Type': 'application/json',
                 ...header
             },
             observe: "body" as "body",
@@ -58,6 +58,11 @@ export class APIService {
                 ).pipe(catchError(this.handleError))
                 break;
         }
+    }
+
+    download<T>(paramUrl: string, paramBody: object, paramOption?: object): Observable<T> {
+        let option = { responseType: "blob" as "json" };
+        return this.http.post<T>(this.apiurl + "/" + paramUrl, paramBody, option).pipe(catchError(this.handleError));
     }
 
     handleError(error: HttpErrorResponse){

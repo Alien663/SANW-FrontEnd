@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { APIModule } from '../../Lib/api'
+import { APIService } from '../../Lib/api.service'
 
 @Component({
     selector: 'app-order',
@@ -9,7 +9,8 @@ import { APIModule } from '../../Lib/api'
 })
 
 export class OrderLayout implements OnInit {
-    constructor(private myapi: APIModule) { }
+    
+    constructor(private myapi: APIService) { }
 
     ngOnInit() {
         this.myapi.callAPI("General/dropdown/shipper", "GET").subscribe((res: any) => {
@@ -66,5 +67,31 @@ export class OrderLayout implements OnInit {
         this.nowPage = event.pageIndex
         this.pageSize = event.pageSize
         this.submitQuery()
+    }
+
+    submitDownloadFile(){
+        this.myapi.download("Orders/download", {
+            OrderDate: this.conditions.OrderDate,
+            Shipper: parseInt(this.conditions.Shipper),
+            page: this.nowPage,
+            pagesize: this.pageSize
+        }).subscribe((res:any) => {
+            let blob: Blob = new Blob([res], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+          let downloadUrl = window.URL.createObjectURL(blob);
+          let link = document.createElement("a");
+          link.href = downloadUrl;
+          link.download = "Orders.xlsx";
+          link.click();
+        })
+
+
+        // this.myapi.callAPI("Orders/download", "POST",{
+        //     OrderDate: this.conditions.OrderDate,
+        //     Shipper: parseInt(this.conditions.Shipper),
+        //     page: this.nowPage,
+        //     pagesize: this.pageSize
+        // }).subscribe((res: any) => {
+        //     console.log(res)
+        // })
     }
 }

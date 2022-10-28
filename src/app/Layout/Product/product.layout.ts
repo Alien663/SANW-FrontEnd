@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { PageEvent } from '@angular/material/paginator';
-import { APIModule } from '../../Lib/api'
+import { APIService } from '../../Lib/api.service'
 
 @Component({
     selector: "app-product",
@@ -8,8 +8,21 @@ import { APIModule } from '../../Lib/api'
     styleUrls: ["./product.layout.css"]
 })
 
+interface SearchForm{
+    page: number,
+    pageSize: number
+}
+
+interface Conditions extends SearchForm{
+    Category: Number,
+    Supplier: Number,
+    Price: Number,
+    Discontinued: Boolean,
+    ProductName: String,
+}
+
 export class ProductLayout implements OnInit {
-    constructor(private myapi: APIModule) { }
+    constructor(private myapi: APIService) { }
     showCondition = true;
     showResult = true;
     showTable = false;
@@ -17,17 +30,19 @@ export class ProductLayout implements OnInit {
     pageSize = 10;
     nowPage = 0;
     pageSizeOptions: number[] = [5, 10, 25, 100];
-    pageEvent!: PageEvent;
+    pageEvent: PageEvent | undefined;
     testData: any
     cols: string[] = []
     categories: any = []
     suppliers: any = []
-    conditions = {
-        Category: "0",
-        Supplier: "0",
-        Price: "0",
+    SearchCondition : Conditions = {
+        Category: 0,
+        Supplier: 0,
+        Price: 0.0,
         Discontinued: false,
         ProductName: "",
+        page: 0,
+        pageSize: 10
     }
 
     ngOnInit() {
@@ -48,25 +63,7 @@ export class ProductLayout implements OnInit {
     }
 
     submitQuery() {
-        console.log({
-            Category: parseInt(this.conditions.Category),
-            Supplier: parseInt(this.conditions.Supplier),
-            Price: parseFloat(this.conditions.Price),
-            ProductName: this.conditions.ProductName,
-            Discontinued: Boolean(this.conditions.Discontinued),
-            page: this.nowPage,
-            pagesize: this.pageSize
-        })
-        this.myapi.callAPI("Product/gridview", "POST",
-            {
-                Category: parseInt(this.conditions.Category),
-                Supplier: parseInt(this.conditions.Supplier),
-                Price: parseFloat(this.conditions.Price),
-                ProductName: this.conditions.ProductName,
-                Discontinued: Boolean(this.conditions.Discontinued),
-                page: this.nowPage,
-                pagesize: this.pageSize
-            })
+        this.myapi.callAPI("Product/gridview", "POST",{...this.SearchCondition})
             .subscribe((res: any) => {
                 this.testData = res.data
                 this.length = res.counts
@@ -76,7 +73,19 @@ export class ProductLayout implements OnInit {
 
     onPaginateChange(event: any) {
         this.nowPage = event.pageIndex
-        this.pageSize = event.pageSize
+        this.SearchCondition.pageSize = event.pageSize
         this.submitQuery()
+    }
+
+    submitDownloadFile(){
+        this.myapi.download("Product/download", {...this.SearchCondition})
+        .subscribe((res:any) => {
+            let blob: Blob = new Blob([res], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+          let downloadUrl = window.URL.createObjectURL(blob);
+          let link = document.createElement("a");
+          link.href = downloadUrl;
+          link.download = "Products.xlsx";
+          link.click();
+        })
     }
 }

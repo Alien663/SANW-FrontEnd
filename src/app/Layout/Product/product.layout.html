@@ -9,28 +9,28 @@
       <div class="condition">
         <label>Category</label>
         <div class="col">
-          <select name="Category" [(ngModel)]="conditions.Category">
+          <select name="Category" [(ngModel)]="SearchCondition.Category">
             <option selected value="0">Choose</option>
             <option *ngFor="let item of categories" value={{item.value}}>{{item.name}}</option>
           </select>
         </div>
         <label>Supplier</label>
         <div class="col">
-          <select name="Supplier" [(ngModel)]="conditions.Supplier">
+          <select name="Supplier" [(ngModel)]="SearchCondition.Supplier">
             <option selected value="0">Choose</option>
             <option *ngFor="let item of suppliers" value={{item.value}}>{{item.name}}</option>
           </select>
         </div>
         <label>Price</label>
-        <div class="col"><input type="number" name="Price" [(ngModel)]="conditions.Price"></div>
+        <div class="col"><input type="number" name="Price" [(ngModel)]="SearchCondition.Price"></div>
         <button type="submit" mat-raised-button color="primary" style="float: right;">Query</button>
       </div>
       <div class="condition">
         <label>Product Name</label>
-        <div class="col"><input name="ProductName" [(ngModel)]="conditions.ProductName"></div>
+        <div class="col"><input name="ProductName" [(ngModel)]="SearchCondition.ProductName"></div>
         <label>Discontinued</label>
-        <div class="col"><input name="Discontinued" type="checkbox" [(ngModel)]="conditions.Discontinued"></div>
-        <button mat-raised-button color="primary" style="float: right;">Export</button>
+        <div class="col"><input name="Discontinued" type="checkbox" [(ngModel)]="SearchCondition.Discontinued"></div>
+        <button mat-raised-button type="button" color="primary" style="float: right;" (click)="submitDownloadFile()">Export</button>
       </div>
     </form>
   </mat-expansion-panel>
@@ -44,7 +44,7 @@
     <div *ngIf="showTable" style="max-height: 550px;overflow: auto;">
       <app-base-table [dataSource]="testData" [displayedColumns]="cols"></app-base-table>
     </div>
-    <mat-paginator *ngIf="showTable" [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+    <mat-paginator *ngIf="showTable" [length]="length" [pageSize]="SearchCondition.pageSize" [pageSizeOptions]="pageSizeOptions"
       (page)="onPaginateChange($event)" aria-label="Select page" showFirstLastButtons>
     </mat-paginator>
 
