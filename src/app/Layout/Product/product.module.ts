@@ -12,7 +12,6 @@ import { MatTableModule } from '@angular/material/table'
 import { MatPaginatorModule } from "@angular/material/paginator"
 import { BaseTableModuel } from "../../Component/BaseTable/base.table.module"
 
-import { APIModule } from '../../Lib/api'
 @NgModule({
     declarations: [ProductLayout],
     imports:[
@@ -27,7 +26,6 @@ import { APIModule } from '../../Lib/api'
         MatPaginatorModule,
         BaseTableModuel,
     ],
-    exports:[ProductLayout]
 })
 
 export class ProductModule{}

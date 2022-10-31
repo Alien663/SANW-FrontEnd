@@ -2,28 +2,28 @@
     <mat-list-item>
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Account</mat-label>
-        <input matInput disabled value="{{ personaldata.account }}">
+        <input matInput disabled value="{{ _pdata.Account }}">
       </mat-form-field>
     </mat-list-item>
     
     <mat-list-item>
       <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Nick Name</mat-label>
-            <input matInput placeholder="Nickl Name" [(ngModel)]="personaldata.nickName">
+            <input matInput placeholder="Nickl Name" [(ngModel)]="_pdata.NickName">
           </mat-form-field>
     </mat-list-item>
 
     <mat-list-item>
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Email</mat-label>
-        <input type="email" matInput required placeholder="Ex. pat@example.com" [(ngModel)]="personaldata.eMail">
+        <input type="email" matInput required placeholder="Ex. pat@example.com" [(ngModel)]="_pdata.EMail">
       </mat-form-field>
     </mat-list-item>
 
     <mat-list-item>
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Create Date</mat-label>
-        <input matInput disabled value="{{ personaldata.since }}">
+        <input matInput disabled value="{{ _pdata.Since }}">
       </mat-form-field>
     </mat-list-item>
     <mat-divider></mat-divider>

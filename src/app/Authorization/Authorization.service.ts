@@ -10,37 +10,25 @@ import { catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
+
 export class AuthService {
-    constructor(private http: HttpClient, private theAPI : APIService){}
+    constructor(private http: HttpClient, private _http : APIService){}
     isLoggedIn = false;
 
     // store the URL so we can redirect after logging in
     redirectUrl: string | null = null;
-
+    
     login(data: any){
-        const apiurl = isDevMode() ? "http://localhost:59089/api/Member/login" : "/api/Member/login";
-        let option = {
-            headers: {'Content-Type': 'application/json'},
-            observe: "response" as "response",
-            withCredentials: true,
-            responseType: 'json' as 'json'
-        }
-        this.http.post(apiurl, data, option)
+        this._http.callAPI("Member/login", "POST", data)
         .subscribe(res => {
             this.isLoggedIn = true
             window.alert("login success")
+            //window.location.assign("/")
         })
     }
 
     autoLogin(){
-        const apiurl = isDevMode() ? "http://localhost:59089/api/Member/login" : "/api/Member/login";
-        let option = {
-            headers: {'Content-Type': 'application/json'},
-            observe: "response" as "response",
-            withCredentials: true,
-            responseType: 'json' as 'json'
-        }
-        this.http.get(apiurl).pipe(catchError(this.handleError))
+        this._http.callAPI("Member/login", "GET")
         .subscribe(res => {
             this.isLoggedIn = true
         })
@@ -48,20 +36,19 @@ export class AuthService {
 
     logout(): void {
         console.log("let me log outtttttt")
-        this.theAPI.callAPI("Member/logout", "POST")
+        this._http.callAPI("Member/logout", "POST")
         .subscribe( res => {
            this.isLoggedIn = false
            window.location.assign("/login");
         })
     }
 
-    handleError(error: HttpErrorResponse){
-        if(error.status === 0){
-            console.error("Error occured : ", error.error)
-        }
-        else{
-            console.error(`Backend return code ${error.status}, body was`, error.error)
-        }
-        return throwError( () => new Error("Something bad happened; please try again later."))
+    PermissionCheck(){
+        this._http.callAPI("Member/login", "GET")
+        .subscribe(res => {
+            this.isLoggedIn = true
+            return true;
+        })
+        return false;
     }
 }

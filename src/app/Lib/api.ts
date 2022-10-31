@@ -13,12 +13,12 @@ export class APIModule {
     constructor(private http: HttpClient) { }
     resData: any
     callAPI(path: string, method: "GET" | "POST" | "PUT" | "DELETE", reqdata?: any, header?: { [header: string]: string | string[] }, filelist: any = []) {
-        const apiurl = isDevMode() ? "http://localhost:59089/api" : "/api";
+        const apiurl = isDevMode() ? "http://localhost:5000/api" : "/api";
         let url = `${apiurl}/${path}`
         let option = {
             headers: {
+                ...header,
                 'Content-Type': 'application/json',
-                ...header
             },
             observe: "body" as "body",
             params: method === "GET" ? new HttpParams(reqdata) : new HttpParams(),

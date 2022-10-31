@@ -17,8 +17,8 @@ const routes: Routes = [
   { path: "regeist", component: RegeistLayout},
   { path: "member/information", component:PersonalInformationLayout},
   { path: "member/resetpassword", component:ResetPasswordLayout},
-  { path: "order", component: OrderLayout },
-  { path: "product", component: ProductLayout },
+  { path: "order", component: OrderLayout},
+  { path: "product", component: ProductLayout},
   { path: "**", component: PageNotFoundComponent}
 ];
 
@@ -26,4 +26,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

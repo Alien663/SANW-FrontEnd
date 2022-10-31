@@ -1,7 +1,20 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, inject, Injectable, OnInit, SecurityContext } from '@angular/core'
 import {FormControl, Validators} from '@angular/forms';
+import { PostProcessPopupParams } from 'ag-grid-community';
 import { EasyFormSetting } from "../../Component/EasyForm/easyform.component"
 import { APIService } from '../../Lib/api.service'
+import { PersonalInformationLayout } from '../PersonalInformation/personalInformation.layout'
+
+
+interface RegeistModel {
+    Account: string,
+    Password: string,
+    ConfirmPassword: string,
+    EMail : string,
+    NickName : string,
+}
+
+
 
 @Component({
     selector: "app-regeist",
@@ -10,26 +23,58 @@ import { APIService } from '../../Lib/api.service'
 })
 
 export class RegeistLayout {
-    constructor (private myapi : APIService){}
+    constructor (private _http : APIService){}
     
-    personaldata = {
-        account: "",
-        password: "",
-        confirm_password: "",
-        eMail: "",
-        nickName: "",
+    protected _pData : RegeistModel = {
+        Account: "",
+        Password : "",
+        ConfirmPassword : "",
+        EMail : "",
+        NickName : "",
     }
 
     emailFormControl = new FormControl('', [Validators.required, Validators.email]);
-    
+
     submitRegeist(){
-        console.log(this.personaldata)
-        if(this.personaldata.password != this.personaldata.confirm_password){
-            window.alert("confirm_password is wrong, please check again")
+        console.log(this._pData)
+        if(this.ValidateRegeistData()){
+            this._http.callAPI("member/new", "PUT", this._pData)
+            .subscribe((res:any) => {
+                window.alert("Regeist Successful, please login again")
+                window.location.assign("/login")
+            })
         }
-        this.myapi.callAPI("member/new", "PUT", this.personaldata).subscribe((res:any) => {
-            window.alert("Regeist Successful, please login again")
-            window.location.assign("/login")
-        })
+    }
+
+    ValidateRegeistData(){
+        console.log("validate regeist data")
+        if(!this._pData.Account){
+            window.alert("Account cant not be empty")
+            return false;
+        }
+
+        if(!this._pData.Password){
+            window.alert("Password cant not be empty")
+            return false;
+        }
+        if(!this._pData.ConfirmPassword){
+            window.alert("ConfirmPassword cant not be empty")
+            return false;
+        }
+        if(!this._pData.EMail) {
+            window.alert("EMail cant not be empty")
+            return false;
+        }
+        if(!this._pData.NickName){
+            window.alert("NickName cant not be empty")
+            return false;
+        }
+        if(this._pData.Password != this._pData.ConfirmPassword){
+            window.alert("Confirm Password is wrong, please check again")
+            this._pData.Password = ""
+            this._pData.ConfirmPassword = ""
+            return false;
+        }
+        return true
     }
 }

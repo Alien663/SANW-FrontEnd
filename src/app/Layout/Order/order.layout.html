@@ -9,13 +9,13 @@
       <div class="condition">
         <label>Order Date</label>
         <div class="col">
-          <input [matDatepicker]="picker" name="OrderDate" [(ngModel)]="conditions.OrderDate">
+          <input [matDatepicker]="picker" name="OrderDate" [(ngModel)]="SearchConditions.OrderDate">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </div>
         <label for="order-shipper">Shipper</label>
         <div class="col">
-          <select id="order-shipper" name="Shipper" [(ngModel)]="conditions.Shipper">
+          <select id="order-shipper" name="Shipper" [(ngModel)]="SearchConditions.Shipper">
             <option value="0">Choose</option>
             <option *ngFor="let item of shippers" value={{item.value}}>{{item.name}}</option>
           </select>
@@ -37,16 +37,31 @@
     </mat-expansion-panel-header>
     
     <div *ngIf="showTable" style="max-height: 550px;overflow: auto;">
-      <app-base-table [dataSource]="testData" [displayedColumns]="cols"></app-base-table>
+      <table
+          mat-table
+          multiTemplateDataRows
+          [dataSource]="resData" 
+          class="mat-elevation-z8">
+
+          <ng-container matColumnDef="{{ column }}" *ngFor="let column of columnsToDisplay">
+            <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+            <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
+          <tr mat-row (click)="openDialog('0ms', '0ms')" class="example-element-row" *matRowDef="let row; columns: columnsToDisplay;"></tr>
+        </table>
+
+
+
+      <app-base-table [dataSource]="resData" [displayedColumns]="columnsToDisplay"></app-base-table>
     </div>
     <mat-paginator *ngIf="showTable" [length]="length"
-              [pageSize]="pageSize"
+              [pageSize]="SearchConditions.pageSize"
               [pageSizeOptions]="pageSizeOptions"
               (page)="onPaginateChange($event)"
               aria-label="Select page"
               showFirstLastButtons >
     </mat-paginator>
-    
-
   </mat-expansion-panel>
 </mat-accordion>

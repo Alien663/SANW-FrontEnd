@@ -42,10 +42,10 @@
     </mat-expansion-panel-header>
 
     <div *ngIf="showTable" style="max-height: 550px;overflow: auto;">
-      <app-base-table [dataSource]="testData" [displayedColumns]="cols"></app-base-table>
+      <app-base-table [dataSource]="resData" [displayedColumns]="cols"></app-base-table>
     </div>
     <mat-paginator *ngIf="showTable" [length]="length" [pageSize]="SearchCondition.pageSize" [pageSizeOptions]="pageSizeOptions"
-      (page)="onPaginateChange($event)" aria-label="Select page" showFirstLastButtons>
+      (Page)="onPaginateChange($event)" aria-label="Select page" showFirstLastButtons>
     </mat-paginator>
 
 

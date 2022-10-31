@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core'
-import {FormControl, Validators} from '@angular/forms';
-import { EasyFormSetting } from "../../Component/EasyForm/easyform.component"
 import { APIService } from '../../Lib/api.service'
+
+interface PersonalModel {
+    Account : string,
+    UUID : string,
+    EMail : string,
+    NickName : string,
+    Since : Date,
+    ModifyDateTime : Date
+}
 
 @Component({
     selector: "app-personal-info",
@@ -12,24 +19,26 @@ import { APIService } from '../../Lib/api.service'
 export class PersonalInformationLayout implements OnInit {
     constructor (private myapi : APIService){}
     ngOnInit(){
-        this.myapi.callAPI("Member/me", "GET", {}).subscribe((res:any) => {
-            this.personaldata = res
+        this.myapi.callAPI("Member/me", "GET")
+        .subscribe((res:any) => {
+            this._pdata = res
         })
     }
-    
-    personaldata = {
-        account: "",
-        uuid: "",
-        eMail: "",
-        nickName: "",
-        since: "",
-        modifyDatetime: ""
+    protected _pdata : PersonalModel = {
+        Account: "",
+        UUID : "",
+        EMail: "",
+        NickName: "",
+        Since : new Date(),
+        ModifyDateTime: new Date()
     }
-
+    
     saveData(){
-        console.log(this.personaldata)
-        this.myapi.callAPI("Member/me", "POST", this.personaldata).subscribe(res => {
-            console.log(res)
+        console.log(this._pdata)
+        this.myapi.callAPI("Member/me", "POST", this._pdata)
+        .subscribe(res => {
+            window.alert("Update Personal Data Success")
+            window.location.reload()
         })
     }
 }

@@ -1,68 +1,50 @@
+import { isDevMode, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { isDevMode } from '@angular/core';
-import { Injectable } from '@angular/core'
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-
 
 @Injectable()
 export class APIService {
     constructor(private http: HttpClient) {}
-    apiurl =  isDevMode() ? "http://localhost:59089/api" : "/api"
-    callAPI(path: string, method: "GET" | "POST" | "PUT" | "DELETE", reqdata?: any, header?: { [header: string]: string | string[] }, filelist: any = []) {
-        let reqParams = new HttpParams();
-        if(method === "GET" && reqdata.length > 0){
-            reqdata.forEach( (item : any) => {
-                let keyname = Object.keys(item)[0]
-                reqParams.set(keyname, item[keyname])
-            });
-        }
-        if(!header){
-            header = {'Content-Type': 'application/json'}
-        }
-        let url = `${this.apiurl}/${path}`
+    public rootURL : string = isDevMode() ? "http://localhost:5000/api" : "/api"
+    public option : any = {
+        observe: "body" as "body",
+        withCredentials: true,
+        responseType: 'json' as 'json'
+    }
+
+    callAPI(path: string, method: "GET" | "POST" | "PUT" | "DELETE", reqdata?: any, header?: { [header: string]: string | string[] }) {
+        let url = `${this.rootURL}/${path}`
+        let _header = header? header : {'Content-Type': 'application/json'}
         let option = {
+            ...this.option,
             headers: {
-                ...header
+                ..._header,
             },
-            observe: "body" as "body",
-            params: method === "GET" ? reqParams : {},
-            withCredentials: true,
-            responseType: 'json' as 'json'
-        }
-        if (filelist.length) {
-            let formData = new FormData()
-            formData.append('file', filelist[0], filelist[0].name);
-            for (let k in reqdata)
-                formData.append(k, reqdata[k])
-            option.headers["Content-Type"] = 'multipart/form-data'
+            params: method === "GET" ? this.GetParams(reqdata) : {},
         }
         switch (method) {
             case "GET":
                 return(this.http.get(url, option))
                     .pipe(catchError(this.handleError))
-                break;
             case "POST":
                 return(this.http.post(url, reqdata, option))
                     .pipe(catchError(this.handleError))
-                break;
             case "PUT":
                 return(this.http.put(url, reqdata, option))
                     .pipe(catchError(this.handleError))
-                break;
             case "DELETE":
                 return(this.http.delete(url, {
                     body: reqdata,
                     ...option
                 })
                 ).pipe(catchError(this.handleError))
-                break;
         }
     }
 
     download<T>(paramUrl: string, paramBody: object, paramOption?: object): Observable<T> {
         let option = { responseType: "blob" as "json" };
-        return this.http.post<T>(this.apiurl + "/" + paramUrl, paramBody, option).pipe(catchError(this.handleError));
+        return this.http.post<T>(this.rootURL + "/" + paramUrl, paramBody, option).pipe(catchError(this.handleError));
     }
 
     handleError(error: HttpErrorResponse){
@@ -75,5 +57,16 @@ export class APIService {
             console.error(`Backend return code ${error.status}, body was`, error.error)
         }
         return throwError( () => new Error("Something bad happened; please try again later."))
+    }
+
+    GetParams(originData : any){
+        let params = new HttpParams();
+        if(originData > 0){
+            originData.forEach( (item : any) => {
+                let keyname = Object.keys(item)[0]
+                params.set(keyname, item[keyname])
+            })
+        }
+        return params
     }
 }
