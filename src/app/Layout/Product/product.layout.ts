@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { PageEvent } from '@angular/material/paginator';
 import { APIService } from '../../Lib/api.service'
 
-interface SearchForm{
+interface SearchForm {
     nowPage: number,
     pageSize: number
 }

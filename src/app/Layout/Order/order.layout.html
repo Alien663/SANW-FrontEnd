@@ -1,21 +1,21 @@
 <mat-accordion multi>
-  <mat-expansion-panel [expanded]="showCondition">
+  <mat-expansion-panel [expanded]="_service.showCondition">
     <mat-expansion-panel-header>
       <mat-panel-title>
         Search Condition
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <form style="width: 100%;" (ngSubmit)="submitForm()">
+    <form style="width: 100%;" (ngSubmit)="_service.submitQuery()">
       <div class="condition">
         <label>Order Date</label>
         <div class="col">
-          <input [matDatepicker]="picker" name="OrderDate" [(ngModel)]="SearchConditions.OrderDate">
+          <input [matDatepicker]="picker" name="OrderDate" [(ngModel)]="_service.SearchConditions.OrderDate">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </div>
         <label for="order-shipper">Shipper</label>
         <div class="col">
-          <select id="order-shipper" name="Shipper" [(ngModel)]="SearchConditions.Shipper">
+          <select id="order-shipper" name="Shipper" [(ngModel)]="_service.SearchConditions.Shipper">
             <option value="0">Choose</option>
             <option *ngFor="let item of shippers" value={{item.value}}>{{item.name}}</option>
           </select>
@@ -24,44 +24,38 @@
         <div class="col">
           <button mat-raised-button color="primary" style="float: right;">Query</button>
         </div>
-        <button mat-raised-button color="primary" type="button" style="float: right;" (click)="submitDownloadFile()">Export</button>
+        <button mat-raised-button color="primary" type="button" style="float: right;" (click)="_service.downloadFile()">Export</button>
         
       </div>
     </form>
   </mat-expansion-panel>
-  <mat-expansion-panel [expanded]="showResult">
+
+  <mat-expansion-panel [expanded]="_service.showResult">
     <mat-expansion-panel-header>
       <mat-panel-title>
         Serch Result
       </mat-panel-title>
     </mat-expansion-panel-header>
-    
-    <div *ngIf="showTable" style="max-height: 550px;overflow: auto;">
-      <table
-          mat-table
-          multiTemplateDataRows
-          [dataSource]="resData" 
-          class="mat-elevation-z8">
-
-          <ng-container matColumnDef="{{ column }}" *ngFor="let column of columnsToDisplay">
+    <div *ngIf="_service.showTable">
+      <div style="max-height: 550px;overflow: auto;">
+        <table mat-table multiTemplateDataRows [dataSource]="_service.resData" class="mat-elevation-z8">
+          <ng-container matColumnDef="{{ column }}" *ngFor="let column of _service.columnsToDisplay">
             <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
             <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
           </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
-          <tr mat-row (click)="openDialog('0ms', '0ms')" class="example-element-row" *matRowDef="let row; columns: columnsToDisplay;"></tr>
+  
+          <tr mat-header-row *matHeaderRowDef="_service.columnsToDisplay; sticky: true"></tr>
+          <tr mat-row (click)="openDialog(row)" class="example-element-row" *matRowDef="let row; columns: _service.columnsToDisplay;"></tr>
         </table>
-
-
-
-      <app-base-table [dataSource]="resData" [displayedColumns]="columnsToDisplay"></app-base-table>
+      </div>
+      
+      <mat-paginator [length]="_service.length"
+                [pageSize]="_service.SearchConditions.pageSize"
+                [pageSizeOptions]="_service.pageSizeOptions"
+                (page)="_service.onPaginateChange($event)"
+                aria-label="Select page"
+                showFirstLastButtons >
+      </mat-paginator>
     </div>
-    <mat-paginator *ngIf="showTable" [length]="length"
-              [pageSize]="SearchConditions.pageSize"
-              [pageSizeOptions]="pageSizeOptions"
-              (page)="onPaginateChange($event)"
-              aria-label="Select page"
-              showFirstLastButtons >
-    </mat-paginator>
   </mat-expansion-panel>
 </mat-accordion>

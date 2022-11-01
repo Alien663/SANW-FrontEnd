@@ -1,8 +1,56 @@
-<h1 mat-dialog-title>Delete file</h1>
-<div mat-dialog-content>
-  Would you like to delete cat.jpeg?
-</div>
-<div mat-dialog-actions>
-  <button mat-button mat-dialog-close>No</button>
-  <button mat-button mat-dialog-close cdkFocusInitial>Ok</button>
-</div>
+<form (ngSubmit)="submitForm()">
+  <div>
+    <label>OrderDate</label>
+    <div class="col"><input type="date" name="OrderDate" [(ngModel)]="data.orderDate"></div>
+    <label>CustomerID</label>
+    <div class="col"><input type="text" name="CustomerID" [(ngModel)]="data.customerID"></div>
+    <label>ShipName</label>
+    <div class="col"><input type="text" name="ShipName" [(ngModel)]="data.shipName"></div>
+  </div>
+  <div>
+    <label>Shipper</label>
+    <div class="col"><input type="text" name="Shipper" [(ngModel)]="data.shipper"></div>
+    <label>ShippedDate</label>
+    <div class="col"><input type="date" name="ShippedDate" [(ngModel)]="data.shippedDate"></div>
+    <label>ShipRegion</label>
+    <div class="col"><input type="text" name="ShipRegion" [(ngModel)]="data.shipRegion"></div>
+  </div>
+
+  <div>
+    <label>ShipCountry</label>
+    <div class="col"><input type="text" name="ShipCountry" [(ngModel)]="data.shipCountry"></div>
+    <label>ShipCity</label>
+    <div class="col"><input type="text" name="ShipCity" [(ngModel)]="data.shipCity"></div>
+    <label>ShipPostalCode</label>
+    <div class="col"><input type="text" name="ShipPostalCode" [(ngModel)]="data.shipPostalCode"></div>
+  </div>
+
+  <div>
+    <label>ShipAddress</label>
+    <div class="col"><input type="text" name="ShipAddress" [(ngModel)]="data.shipAddress"></div>
+    <label>Employee</label>
+    <div class="col"><input type="text" name="Employee" [(ngModel)]="data.employee"></div>
+    <label>JobTitle</label>
+    <div class="col"><input type="text" name="JobTitle" [(ngModel)]="data.jobTitle"></div>
+  </div>
+
+  <div>
+    <label>Region</label>
+    <div class="col"><input type="text" name="Region" [(ngModel)]="data.region"></div>
+    <label>Country</label>
+    <div class="col"><input type="text" name="Country" [(ngModel)]="data.country"></div>
+    <label>City</label>
+    <div class="col"><input type="text" name="City" [(ngModel)]="data.city"></div>
+  </div>
+
+  <div>
+    <label>PostalCode</label>
+    <div class="col"><input type="text" name="PostalCode" [(ngModel)]="data.postalCode"></div>
+    <label>Address</label>
+    <div class="col"><input type="text" name="Address" [(ngModel)]="data.address"></div>
+  </div>
+  <div style="text-align: center;">
+    <button type="button" mat-button (click)="onNoClick()">Cancel</button>
+    <button type="submit" mat-button>Update</button>
+  </div>
+</form>
