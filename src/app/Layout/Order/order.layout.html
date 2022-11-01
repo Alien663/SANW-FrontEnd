@@ -49,12 +49,13 @@
         </table>
       </div>
       
-      <mat-paginator [length]="_service.length"
-                [pageSize]="_service.SearchConditions.pageSize"
-                [pageSizeOptions]="_service.pageSizeOptions"
-                (page)="_service.onPaginateChange($event)"
-                aria-label="Select page"
-                showFirstLastButtons >
+      <mat-paginator
+          [length]="_service.length"
+          [pageSize]="_service.SearchConditions.pageSize"
+          [pageSizeOptions]="_service.pageSizeOptions"
+          (page)="_service.onPaginateChange($event)"
+          aria-label="Select page"
+          showFirstLastButtons >
       </mat-paginator>
     </div>
   </mat-expansion-panel>

@@ -1,0 +1,40 @@
+<form (ngSubmit)="submitForm()">
+    <div>
+      <label>Product Name</label>
+      <div class="col"><input type="text" name="productName" [(ngModel)]="data.productName"></div>
+      <label>Quantity Per Unit</label>
+      <div class="col"><input type="text" name="quantityPerUnit" [(ngModel)]="data.quantityPerUnit"></div>
+      <label>Unit Price</label>
+      <div class="col"><input type="text" name="unitPrice" [(ngModel)]="data.unitPrice"></div>
+    </div>
+    <div>
+      <label>Units In Stock</label>
+      <div class="col"><input type="text" name="unitsInStock" [(ngModel)]="data.unitsInStock"></div>
+      <label>Units On Order</label>
+      <div class="col"><input type="text" name="unitsOnOrder" [(ngModel)]="data.unitsOnOrder"></div>
+      <label>Reorder Level</label>
+      <div class="col"><input type="text" name="reorderLevel" [(ngModel)]="data.reorderLevel"></div>
+    </div>
+  
+    <div>
+      <label>Discontinued</label>
+      <div class="col"><input type="text" name="discontinued" [(ngModel)]="data.discontinued"></div>
+      <label>Discontinued</label>
+      <div class="col"><input type="text" name="categoryName" [(ngModel)]="data.categoryName"></div>
+      <label>Description</label>
+      <div class="col"><input type="text" name="description" [(ngModel)]="data.description"></div>
+    </div>
+  
+    <div>
+      <label>Supplier</label>
+      <div class="col"><input type="text" name="supplier" [(ngModel)]="data.supplier"></div>
+      <label>Contact Name</label>
+      <div class="col"><input type="text" name="contactName" [(ngModel)]="data.contactName"></div>
+      <label>Contact Title</label>
+      <div class="col"><input type="text" name="contactTitle" [(ngModel)]="data.contactTitle"></div>
+    </div>
+    <div style="text-align: center;">
+      <button type="button" mat-button (click)="onNoClick()">Cancel</button>
+      <button type="submit" mat-button>Update</button>
+    </div>
+  </form>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { APIService } from '../../Lib/api.service'
-import { OrderModel, ConditionModel } from './Order.Model'
+import { OrderModel, ConditionModel } from './order.model'
 import { PageEvent } from '@angular/material/paginator';
 
 @Injectable()

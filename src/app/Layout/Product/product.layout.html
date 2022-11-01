@@ -1,53 +1,65 @@
 <mat-accordion multi>
-  <mat-expansion-panel [expanded]="showCondition">
+  <mat-expansion-panel [expanded]="_service.showCondition">
     <mat-expansion-panel-header>
       <mat-panel-title>
         Search Condition
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <form style="width: 100%;" (ngSubmit)="submitForm()">
+    <form style="width: 100%;" (ngSubmit)="_service.submitQuery()">
       <div class="condition">
         <label>Category</label>
         <div class="col">
-          <select name="Category" [(ngModel)]="SearchCondition.Category">
+          <select name="Category" [(ngModel)]="_service.SearchCondition.Category">
             <option selected value="0">Choose</option>
             <option *ngFor="let item of categories" value={{item.value}}>{{item.name}}</option>
           </select>
         </div>
         <label>Supplier</label>
         <div class="col">
-          <select name="Supplier" [(ngModel)]="SearchCondition.Supplier">
+          <select name="Supplier" [(ngModel)]="_service.SearchCondition.Supplier">
             <option selected value="0">Choose</option>
             <option *ngFor="let item of suppliers" value={{item.value}}>{{item.name}}</option>
           </select>
         </div>
         <label>Price</label>
-        <div class="col"><input type="number" name="Price" [(ngModel)]="SearchCondition.Price"></div>
+        <div class="col"><input type="number" name="Price" [(ngModel)]="_service.SearchCondition.Price"></div>
         <button type="submit" mat-raised-button color="primary" style="float: right;">Query</button>
       </div>
       <div class="condition">
         <label>Product Name</label>
-        <div class="col"><input name="ProductName" [(ngModel)]="SearchCondition.ProductName"></div>
+        <div class="col"><input name="ProductName" [(ngModel)]="_service.SearchCondition.ProductName"></div>
         <label>Discontinued</label>
-        <div class="col"><input name="Discontinued" type="checkbox" [(ngModel)]="SearchCondition.Discontinued"></div>
-        <button mat-raised-button type="button" color="primary" style="float: right;" (click)="submitDownloadFile()">Export</button>
+        <div class="col"><input name="Discontinued" type="checkbox" [(ngModel)]="_service.SearchCondition.Discontinued"></div>
+        <button mat-raised-button type="button" color="primary" style="float: right;" (click)="_service.downloadFile()">Export</button>
       </div>
     </form>
   </mat-expansion-panel>
-  <mat-expansion-panel [expanded]="showResult">
+  <mat-expansion-panel [expanded]="_service.showResult">
     <mat-expansion-panel-header>
       <mat-panel-title>
         Serch Result
       </mat-panel-title>
     </mat-expansion-panel-header>
-
-    <div *ngIf="showTable" style="max-height: 550px;overflow: auto;">
-      <app-base-table [dataSource]="resData" [displayedColumns]="cols"></app-base-table>
+    <div *ngIf="_service.showTable">
+      <div style="max-height: 550px;overflow: auto;">
+        <table mat-table multiTemplateDataRows [dataSource]="_service.resData" class="mat-elevation-z8">
+          <ng-container matColumnDef="{{ column }}" *ngFor="let column of _service.columnsToDisplay">
+            <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+            <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="_service.columnsToDisplay; sticky: true"></tr>
+          <tr mat-row (click)="openDialog(row)" class="example-element-row" *matRowDef="let row; columns: _service.columnsToDisplay;"></tr>
+        </table>
+      </div>
     </div>
-    <mat-paginator *ngIf="showTable" [length]="length" [pageSize]="SearchCondition.pageSize" [pageSizeOptions]="pageSizeOptions"
-      (Page)="onPaginateChange($event)" aria-label="Select page" showFirstLastButtons>
+    <mat-paginator
+        [length]="_service.length"
+        [pageSize]="_service.SearchCondition.pageSize"
+        [pageSizeOptions]="_service.pageSizeOptions"
+        (Page)="_service.onPaginateChange($event)"
+        aria-label="Select page"
+        showFirstLastButtons>
     </mat-paginator>
-
-
   </mat-expansion-panel>
 </mat-accordion>

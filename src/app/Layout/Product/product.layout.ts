@@ -1,92 +1,60 @@
-import { Component, OnInit } from "@angular/core";
-import { PageEvent } from '@angular/material/paginator';
+import { Component, OnInit, Inject } from "@angular/core";
 import { APIService } from '../../Lib/api.service'
-
-interface SearchForm {
-    nowPage: number,
-    pageSize: number
-}
-
-interface Conditions extends SearchForm{
-    Category: Number,
-    Supplier: Number,
-    Price: Number,
-    Discontinued: Boolean,
-    ProductName: String,
-}
+import { ProductModel } from './product.model'
+import { ProductService } from "./product.service";
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
     selector: "app-product",
     templateUrl: "./product.layout.html",
-    styleUrls: ["./product.layout.css"]
+    styleUrls: ["./product.layout.css", "./product.table.css"]
 })
 
 export class ProductLayout implements OnInit {
-    constructor(private _http: APIService) {}
-
-    SearchCondition : Conditions = {
-        Category: 0,
-        Supplier: 0,
-        Price: 0.0,
-        Discontinued: false,
-        ProductName: "",
-        nowPage: 0,
-        pageSize: 10
-    }
-    pageSizeOptions : number[] = [5, 10, 25, 100]
-    pageEvent : PageEvent | undefined
-    showCondition : boolean = true
-    showResult : boolean = true
-    showTable : boolean =  false
-    length: number = 0
-    resData : any
-    cols: string[] = []
-    categories:  any
-    suppliers: any
+    protected categories:  any
+    protected suppliers: any
+    protected resDataNow : ProductModel | undefined
+    constructor(
+        private _http: APIService,
+        public _service : ProductService,
+        private dialog: MatDialog
+    ) {}
     
     ngOnInit() {
         this._http.callAPI("General/dropdown/category", "GET")
-        .subscribe((res: any) => {
-            this.categories = res
-        })
+        .subscribe((res: any) => {this.categories = res})
         this._http.callAPI("General/dropdown/supplier", "GET")
-        .subscribe((res: any) => {
-            this.suppliers = res
-        })
+        .subscribe((res: any) => {this.suppliers = res})
+    }
+
+    openDialog(row : ProductModel): void {
+        this.resDataNow = row
+        this.dialog.open(ProductDetailComponent, {
+            width: '70%',
+            data: this.resDataNow
+        });
+    }
+}
+
+
+@Component({
+    selector: 'app-product-detail',
+    templateUrl: './productDetail.component.html',
+    styleUrls: ['./product.dialog.css'],
+})
+
+export class ProductDetailComponent{
+    constructor(
+        public dialogRef: MatDialogRef<ProductDetailComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: ProductModel,
+        private _service : ProductService
+    ){}
+
+    onNoClick(): void {
+        this.dialogRef.close();
     }
 
     submitForm(){
-        this.SearchCondition.pageSize = 10;
-        this.SearchCondition.nowPage = 0;
-        this.showTable = true
-        this.showCondition = false
-        this.submitQuery()
-    }
-
-    submitQuery() {
-        this._http.callAPI("Product/gridview", "POST",{...this.SearchCondition})
-            .subscribe((res: any) => {
-                this.resData = res.data
-                this.length = res.counts
-                this.cols = Object.keys(this.resData[0])
-        })
-    }
-
-    onPaginateChange(event: any) {
-        this.SearchCondition.nowPage = event.pageIndex
-        this.SearchCondition.pageSize = event.pageSize
-        this.submitQuery()
-    }
-
-    submitDownloadFile(){
-        this._http.download("Product/download", {...this.SearchCondition})
-        .subscribe((res:any) => {
-            let blob: Blob = new Blob([res], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-            let downloadUrl = window.URL.createObjectURL(blob);
-            let link = document.createElement("a");
-            link.href = downloadUrl;
-            link.download = "Products.xlsx";
-            link.click();
-        })
+        console.log(this.data)
     }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { APIService } from '../../Lib/api.service'
-import { OrderModel } from './Order.Model'
-import { OrderService } from './Order.service'
+import { OrderModel } from './order.model'
+import { OrderService } from './order.service'
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -12,7 +12,6 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 
 export class OrderLayout implements OnInit {
     protected shippers: any = []
-  
     public resDataNow : OrderModel | undefined
 
     constructor(

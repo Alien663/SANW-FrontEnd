@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { OrderLayout, OrderDetailComponent } from "./order.layout";
-import { OrderService } from './Order.service'
+import { OrderService } from './order.service'
 import { FormsModule } from '@angular/forms'
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatIconModule } from '@angular/material/icon'
