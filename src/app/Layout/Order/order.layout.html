@@ -44,8 +44,15 @@
             <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
           </ng-container>
   
-          <tr mat-header-row *matHeaderRowDef="_service.columnsToDisplay; sticky: true"></tr>
-          <tr mat-row (click)="openDialog(row)" class="example-element-row" *matRowDef="let row; columns: _service.columnsToDisplay;"></tr>
+          <ng-container matColumnDef="DeleteAction">
+            <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+            <td mat-cell *matCellDef="let element">
+              <button (click)="deleteOrder(element['OrderID'])">Delete</button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="_service.columns2; sticky: true"></tr>
+          <tr mat-row (click)="openDialog(row)" class="example-element-row" *matRowDef="let row; columns: _service.columns2;"></tr>
         </table>
       </div>
       

@@ -42,9 +42,18 @@ export class APIService {
         }
     }
 
-    download<T>(paramUrl: string, paramBody: object, paramOption?: object): Observable<T> {
+    download(path : string, filename : string, payload : object, mimetype : object){
         let option = { responseType: "blob" as "json" };
-        return this.http.post<T>(this.rootURL + "/" + paramUrl, paramBody, option).pipe(catchError(this.handleError));
+        this.http.post(this.rootURL + "/" + path, payload, option)
+        .pipe(catchError(this.handleError))
+        .subscribe((res:any) => {
+            let blob: Blob = new Blob([res], mimetype);
+            let downloadUrl = window.URL.createObjectURL(blob);
+            let link = document.createElement("a");
+            link.href = downloadUrl;
+            link.download = filename;
+            link.click();
+        })
     }
 
     handleError(error: HttpErrorResponse){

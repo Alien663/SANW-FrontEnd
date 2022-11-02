@@ -3,6 +3,7 @@ import { APIService } from '../../Lib/api.service'
 import { OrderModel } from './order.model'
 import { OrderService } from './order.service'
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AlertComponent } from '../../Component/alertDialog/alertDialog.component'
 
 @Component({
     selector: 'app-order',
@@ -17,7 +18,7 @@ export class OrderLayout implements OnInit {
     constructor(
         private _http: APIService,
         public dialog: MatDialog,
-        protected _service : OrderService
+        protected _service : OrderService,
     ) { }
 
     ngOnInit() {
@@ -27,10 +28,19 @@ export class OrderLayout implements OnInit {
     }
 
     openDialog(row : OrderModel): void {
-        this.resDataNow = row
         this.dialog.open(OrderDetailComponent, {
             width: '70%',
-            data: this.resDataNow
+            data: {...row},
+            disableClose: true
+        });
+    }
+
+    deleteOrder(OrderID : number){
+        this.dialog.open(AlertComponent, {
+            width: '50%',
+            disableClose: true,
+            data: "Hello World!",
+            role: "alertdialog",
         });
     }
 }
@@ -53,6 +63,8 @@ export class OrderDetailComponent{
     }
 
     submitForm(){
-        console.log(this.data)
+        this._service.updateOrderDetails(this.data)
+        this.dialogRef.close()
+        this._service.submitQuery()
     }
 }

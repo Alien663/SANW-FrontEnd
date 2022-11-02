@@ -29,11 +29,14 @@ export class ProductService{
 
     submitQuery() {
         console.log(this.SearchCondition)
-        this._http.callAPI("Product/gridview", "POST",{...this.SearchCondition
+        this._http.callAPI("Product/gridview", "POST",{
+            ...this.SearchCondition,
+            Category : parseInt(this.SearchCondition.Category.toString()),
+            Supplier : parseInt(this.SearchCondition.Supplier.toString())
         }).subscribe((res: any) => {
-                this.resData = res.data
-                this.length = res.counts
-                this.allColumns = Object.keys(this.resData[0])
+            this.resData = res.data
+            this.length = res.counts
+            this.allColumns = Object.keys(this.resData[0])
         })
         this.showResult = true
         this.showTable = true
@@ -47,14 +50,18 @@ export class ProductService{
     }
 
     downloadFile(){
-        this._http.download("Product/download", {...this.SearchCondition
-        }).subscribe((res:any) => {
-            let blob: Blob = new Blob([res], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-            let downloadUrl = window.URL.createObjectURL(blob);
-            let link = document.createElement("a");
-            link.href = downloadUrl;
-            link.download = "Products.xlsx";
-            link.click();
+        this._http.download("Product/download", "Products.xlsx", {
+            ...this.SearchCondition,
+            Category : parseInt(this.SearchCondition.Category.toString()),
+            Supplier : parseInt(this.SearchCondition.Supplier.toString())
+        }, 
+        { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" })
+    }
+
+    updateProduct(payload : ProductModel){
+        this._http.callAPI("Product", "POST", payload)
+        .subscribe(res => {
+            window.alert("Update Product Success")
         })
     }
 }

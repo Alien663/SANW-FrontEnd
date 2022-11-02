@@ -17,21 +17,26 @@
     </div>
   
     <div>
+      <label>Discontinued : </label>
+      <div class="col">
+        <input type="radio" name="discontinued" [value]="true" [(ngModel)]="data.discontinued">
+        <label>True</label>
+        <input type="radio" name="discontinued" [value]="false" [(ngModel)]="data.discontinued">
+        <label>False</label>
+      </div>
       <label>Discontinued</label>
-      <div class="col"><input type="text" name="discontinued" [(ngModel)]="data.discontinued"></div>
-      <label>Discontinued</label>
-      <div class="col"><input type="text" name="categoryName" [(ngModel)]="data.categoryName"></div>
+      <div class="col"><input type="text" name="categoryName" [(ngModel)]="data.categoryName" disabled="disabled"></div>
       <label>Description</label>
-      <div class="col"><input type="text" name="description" [(ngModel)]="data.description"></div>
+      <div class="col"><input type="text" name="description" [(ngModel)]="data.description" disabled="disabled"></div>
     </div>
   
     <div>
       <label>Supplier</label>
-      <div class="col"><input type="text" name="supplier" [(ngModel)]="data.supplier"></div>
+      <div class="col"><input type="text" name="supplier" [(ngModel)]="data.supplier" disabled="disabled"></div>
       <label>Contact Name</label>
-      <div class="col"><input type="text" name="contactName" [(ngModel)]="data.contactName"></div>
+      <div class="col"><input type="text" name="contactName" [(ngModel)]="data.contactName" disabled="disabled"></div>
       <label>Contact Title</label>
-      <div class="col"><input type="text" name="contactTitle" [(ngModel)]="data.contactTitle"></div>
+      <div class="col"><input type="text" name="contactTitle" [(ngModel)]="data.contactTitle" disabled="disabled"></div>
     </div>
     <div style="text-align: center;">
       <button type="button" mat-button (click)="onNoClick()">Cancel</button>

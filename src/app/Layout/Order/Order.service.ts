@@ -14,6 +14,7 @@ export class OrderService{
     public resData: Array<OrderModel> = []
     public allColumns: string[] = []
     public columnsToDisplay : string[] = ["customerID", "orderDate", "shipName", "shippedDate", "employee"]
+    public columns2 : string[] = [...this.columnsToDisplay, "DeleteAction"]
     public SearchConditions : ConditionModel = {
         pageSize: 10,
         page: 0,
@@ -24,7 +25,9 @@ export class OrderService{
     constructor(private _http : APIService){}
 
     submitQuery() {
-        this._http.callAPI("Orders/gridview", "POST",{ ...this.SearchConditions
+        this._http.callAPI("Orders/gridview", "POST",{
+            ...this.SearchConditions,
+            Shipper: parseInt(this.SearchConditions.Shipper.toString())
         }).subscribe((res: any) => {
             this.resData = res.data
             this.length = res.counts
@@ -37,15 +40,11 @@ export class OrderService{
     }
 
     downloadFile(){
-        this._http.download("Orders/download", { ...this.SearchConditions
-        }).subscribe((res:any) => {
-            let blob: Blob = new Blob([res], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-          let downloadUrl = window.URL.createObjectURL(blob);
-          let link = document.createElement("a");
-          link.href = downloadUrl;
-          link.download = "Orders.xlsx";
-          link.click();
-        })
+        this._http.download("Orders/download", "Orders.xlsx", {
+            ...this.SearchConditions,
+            Shipper: parseInt(this.SearchConditions.Shipper.toString())
+        }, 
+        { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" })
     }
 
     onPaginateChange(event: any) {
@@ -54,4 +53,12 @@ export class OrderService{
         this.submitQuery()
     }
 
+    updateOrderDetails(payload : OrderModel){
+        this._http.callAPI("Orders", "POST", payload)
+        .subscribe(res => {
+            window.alert("Update Order Success")
+        })
+    }
+
+    
 }

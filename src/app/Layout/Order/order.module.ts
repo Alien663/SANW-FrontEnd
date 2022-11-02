@@ -13,7 +13,7 @@ import { MatPaginatorModule } from "@angular/material/paginator"
 import { MatDatepickerModule } from "@angular/material/datepicker"
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatDialogModule } from '@angular/material/dialog';
-
+import { AlertDialogModuel } from '../../Component/alertDialog/alertDialog.module'
 
 @NgModule({
     declarations: [OrderLayout, OrderDetailComponent],
@@ -30,6 +30,7 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatDatepickerModule,
         MatNativeDateModule,
         MatDialogModule,
+        AlertDialogModuel,
     ],
     providers: [OrderService]
 })

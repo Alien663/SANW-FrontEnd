@@ -31,7 +31,8 @@ export class ProductLayout implements OnInit {
         this.resDataNow = row
         this.dialog.open(ProductDetailComponent, {
             width: '70%',
-            data: this.resDataNow
+            data: this.resDataNow,
+            disableClose: true
         });
     }
 }
@@ -55,6 +56,8 @@ export class ProductDetailComponent{
     }
 
     submitForm(){
-        console.log(this.data)
+        this._service.updateProduct(this.data);
+        this.dialogRef.close();
+        this._service.submitQuery();
     }
 }
