@@ -3,6 +3,8 @@ import { APIService } from '../../Lib/api.service'
 import { ProductModel } from './product.model'
 import { ProductService } from "./product.service";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AlertComponent } from '../../Component/alertDialog/alertDialog.component'
+
 
 @Component({
     selector: "app-product",
@@ -11,8 +13,6 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 })
 
 export class ProductLayout implements OnInit {
-    protected categories:  any
-    protected suppliers: any
     protected resDataNow : ProductModel | undefined
     constructor(
         private _http: APIService,
@@ -22,18 +22,32 @@ export class ProductLayout implements OnInit {
     
     ngOnInit() {
         this._http.callAPI("General/dropdown/category", "GET")
-        .subscribe((res: any) => {this.categories = res})
+        .subscribe((res: any) => {this._service.categories = res})
         this._http.callAPI("General/dropdown/supplier", "GET")
-        .subscribe((res: any) => {this.suppliers = res})
+        .subscribe((res: any) => {this._service.suppliers = res})
     }
 
-    openDialog(row : ProductModel): void {
+    updateProduct(row : ProductModel): void {
         this.resDataNow = row
         this.dialog.open(ProductDetailComponent, {
             width: '70%',
             data: this.resDataNow,
-            disableClose: true
         });
+        this._service.submitQuery()
+    }
+
+    deleteProduct(ProductID : number){
+        const _dia = this.dialog.open(AlertComponent, {
+            width: '500px',
+            data: "Are you sure about that?",
+            role: "alertdialog",
+        })
+        _dia.afterClosed().subscribe(result => {
+            if(result){
+                this._service.deleteProduct(ProductID)
+                this._service.submitQuery()
+            }
+        })
     }
 }
 
@@ -48,7 +62,7 @@ export class ProductDetailComponent{
     constructor(
         public dialogRef: MatDialogRef<ProductDetailComponent>,
         @Inject(MAT_DIALOG_DATA) public data: ProductModel,
-        private _service : ProductService
+        protected _service : ProductService
     ){}
 
     onNoClick(): void {

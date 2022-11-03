@@ -1,4 +1,5 @@
 <form (ngSubmit)="submitForm()">
+  <div class="content">
     <div>
       <label>Product Name</label>
       <div class="col"><input type="text" name="productName" [(ngModel)]="data.productName"></div>
@@ -17,29 +18,41 @@
     </div>
   
     <div>
-      <label>Discontinued : </label>
+      <label>Category</label>
       <div class="col">
-        <input type="radio" name="discontinued" [value]="true" [(ngModel)]="data.discontinued">
-        <label>True</label>
-        <input type="radio" name="discontinued" [value]="false" [(ngModel)]="data.discontinued">
-        <label>False</label>
+        <select name="Category" [(ngModel)]="data.category">
+          <option *ngFor="let item of _service.categories" value={{item.value}}>{{item.name}}</option>
+        </select>
       </div>
-      <label>Discontinued</label>
-      <div class="col"><input type="text" name="categoryName" [(ngModel)]="data.categoryName" disabled="disabled"></div>
       <label>Description</label>
-      <div class="col"><input type="text" name="description" [(ngModel)]="data.description" disabled="disabled"></div>
+      <div class="col"><input style="width:500px;" type="text" name="description" [(ngModel)]="data.description" disabled="disabled"></div>
     </div>
   
     <div>
       <label>Supplier</label>
-      <div class="col"><input type="text" name="supplier" [(ngModel)]="data.supplier" disabled="disabled"></div>
+      <div class="col">
+        <select name="Supplier" [(ngModel)]="data.supplier">
+          <option *ngFor="let item of _service.suppliers" value={{item.value}}>{{item.name}}</option>
+        </select>
+      </div>
       <label>Contact Name</label>
       <div class="col"><input type="text" name="contactName" [(ngModel)]="data.contactName" disabled="disabled"></div>
       <label>Contact Title</label>
       <div class="col"><input type="text" name="contactTitle" [(ngModel)]="data.contactTitle" disabled="disabled"></div>
     </div>
-    <div style="text-align: center;">
-      <button type="button" mat-button (click)="onNoClick()">Cancel</button>
-      <button type="submit" mat-button>Update</button>
+
+    <div>
+      <div class="radio-input">
+        Discontinued :
+        <input type="radio" name="discontinued" [value]="true" [(ngModel)]="data.discontinued">
+        <label style="text-align: left;">True</label>
+        <input type="radio" name="discontinued" [value]="false" [(ngModel)]="data.discontinued">
+        <label style="text-align: left;">False</label>
+      </div>
     </div>
-  </form>
+    <div style="text-align: center;">
+      <button color="primary" type="button" mat-raised-button (click)="onNoClick()">Cancel</button>
+      <button color="accent" type="submit" mat-raised-button>Update</button>
+    </div>
+  </div>
+</form>

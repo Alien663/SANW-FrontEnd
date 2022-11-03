@@ -12,7 +12,6 @@ import { AlertComponent } from '../../Component/alertDialog/alertDialog.componen
 })
 
 export class OrderLayout implements OnInit {
-    protected shippers: any = []
     public resDataNow : OrderModel | undefined
 
     constructor(
@@ -23,25 +22,31 @@ export class OrderLayout implements OnInit {
 
     ngOnInit() {
         this._http.callAPI("General/dropdown/shipper", "GET").subscribe((res: any) => {
-            this.shippers = res
+            this._service.shippers = res
         })
     }
 
-    openDialog(row : OrderModel): void {
+    updateOrder(row : OrderModel): void {
         this.dialog.open(OrderDetailComponent, {
             width: '70%',
             data: {...row},
-            disableClose: true
         });
+        this._service.submitQuery()
     }
 
     deleteOrder(OrderID : number){
-        this.dialog.open(AlertComponent, {
-            width: '50%',
-            disableClose: true,
-            data: "Hello World!",
+        console.log(OrderID)
+        const _dia = this.dialog.open(AlertComponent, {
+            width: '500px',
+            data: "Are you sure about that?",
             role: "alertdialog",
-        });
+        })
+        _dia.afterClosed().subscribe(result => {
+            if(result){
+                this._service.deleteOrder(OrderID)
+                this._service.submitQuery()
+            }
+        })
     }
 }
 
@@ -55,7 +60,7 @@ export class OrderDetailComponent{
     constructor(
         public dialogRef: MatDialogRef<OrderDetailComponent>,
         @Inject(MAT_DIALOG_DATA) public data: OrderModel,
-        private _service : OrderService
+        protected _service : OrderService
     ){}
 
     onNoClick(): void {
@@ -63,7 +68,7 @@ export class OrderDetailComponent{
     }
 
     submitForm(){
-        this._service.updateOrderDetails(this.data)
+        this._service.updateOrder(this.data)
         this.dialogRef.close()
         this._service.submitQuery()
     }

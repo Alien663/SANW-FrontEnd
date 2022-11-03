@@ -9,9 +9,12 @@ export class ProductService{
     public showResult = false
     public showTable = false
 
+    public categories:  any
+    public suppliers: any
     public pageSizeOptions : number[] = [5, 10, 25, 100]
     public pageEvent! : PageEvent
-    public columnsToDisplay : string[] = ["productName", "quantityPerUnit", "categoryName", "supplier", "contactName"]
+    public columnsToDisplay : string[] = ["productName", "quantityPerUnit", "categoryName", "supplierName", "contactName"]
+    public columns2 = [...this.columnsToDisplay, "Action"]
     public resData : Array<ProductModel> = []
     public length : number = 0
     public allColumns : string[] = []
@@ -44,6 +47,7 @@ export class ProductService{
     }
 
     onPaginateChange(event: any) {
+        console.log("change page event")
         this.SearchCondition.page = event.pageIndex
         this.SearchCondition.pageSize = event.pageSize
         this.submitQuery()
@@ -59,9 +63,20 @@ export class ProductService{
     }
 
     updateProduct(payload : ProductModel){
-        this._http.callAPI("Product", "POST", payload)
+        this._http.callAPI("Product", "POST", {
+            ...payload,
+            category: parseInt(payload.category.toString()),
+            supplier: parseInt(payload.supplier.toString())
+        })
         .subscribe(res => {
             window.alert("Update Product Success")
+        })
+    }
+
+    deleteProduct(ProductID: number){
+        this._http.callAPI("Product", "DELETE", ProductID)
+        .subscribe(res => {
+            window.alert("Delete Product Success")
         })
     }
 }

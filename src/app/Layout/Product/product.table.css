@@ -47,3 +47,6 @@ table {
     opacity: 0.5;
   }
   
+  .input-long-500{
+    width: 500px;
+  }

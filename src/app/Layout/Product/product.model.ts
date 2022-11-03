@@ -7,9 +7,11 @@ export interface ProductModel{
     unitsOnOrder : number,
     reorderLevel : number,
     discontinued : boolean,
-    categoryName : string,
+    category : number,
+    categoryName: string,
     description : string,
-    supplier : string,
+    supplier : number,
+    supplierName : string,
     contactName : string,
     contactTitle : string,
 }

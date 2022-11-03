@@ -3,7 +3,7 @@ export interface OrderModel {
     orderDate : Date,
     customerID : string,
     shipName : string,
-    shipper : string,
+    shipper : number,
     shippedDate : Date,
     shipRegion : string,
     shipCountry : string,

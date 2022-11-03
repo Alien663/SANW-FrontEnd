@@ -1,17 +1,16 @@
-import { ObserversModule } from '@angular/cdk/observers';
-import { Component, Inject } from '@angular/core'
+import { Token } from '@angular/compiler';
+import { Component, Inject, Input } from '@angular/core'
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-alertDialog',
-    template: `<div>
-            <p>{{ data }}</p>
-            <div style="text-align: center;">
-                <button type="button" mat-button (click)="cancel()">Cancel</button>
-                <button type="button" mat-button (click)="clickOK()">Sure</button>
-            </div>
-        </div>`,
+    template: `<div style="text-align: center;">
+                    <p>{{ data }}</p>
+                    <div>
+                        <button type="button" mat-button (click)="cancel()">Cancel</button>
+                        <button type="button" mat-button (click)="clickOK()">Sure</button>
+                    </div>
+                </div>`,
     styleUrls: ['./alertDialog.component.css'],
 })
 export class AlertComponent{
@@ -23,6 +22,9 @@ export class AlertComponent{
     ){}
 
     cancel(){
-        this.dialogRef.close();
+        this.dialogRef.close(false);
+    }
+    clickOK(){
+        this.dialogRef.close(true);
     }
 }

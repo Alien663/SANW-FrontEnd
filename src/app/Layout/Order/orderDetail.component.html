@@ -1,56 +1,62 @@
 <form (ngSubmit)="submitForm()">
-  <div>
-    <label>Order Date</label>
-    <div class="col"><input type="date" name="OrderDate" [ngModel]="data.orderDate | date:'yyyy-MM-dd'" (ngModelChange)="data.orderDate = $event"></div>
-    <label>Customer ID</label>
-    <div class="col"><input type="text" name="CustomerID" [(ngModel)]="data.customerID"></div>
-    <label>Ship Name</label>
-    <div class="col"><input type="text" name="ShipName" [(ngModel)]="data.shipName"></div>
-  </div>
-  <div>
-    <label>Shipper</label>
-    <div class="col"><input type="text" name="Shipper" [(ngModel)]="data.shipper" disabled="disabled"></div>
-    <label>Shipped Date</label>
-    <div class="col"><input type="date" name="ShippedDate" [ngModel]="data.shippedDate | date:'yyyy-MM-dd'" (ngModelChange)="data.shippedDate = $event"></div>
-    <label>Ship Region</label>
-    <div class="col"><input type="text" name="ShipRegion" [(ngModel)]="data.shipRegion"></div>
-  </div>
+  <div class="content">
+    <div>
+      <label>Order Date</label>
+      <div class="col"><input type="date" name="OrderDate" [ngModel]="data.orderDate | date:'yyyy-MM-dd'" (ngModelChange)="data.orderDate = $event"></div>
+      <label>Customer ID</label>
+      <div class="col"><input type="text" name="CustomerID" [(ngModel)]="data.customerID"></div>
+      <label>Ship Name</label>
+      <div class="col"><input type="text" name="ShipName" [(ngModel)]="data.shipName"></div>
+    </div>
+    <div>
+      <label>Shipper</label>
+      <div class="col">
+        <select name="Shipper" [(ngModel)]="data.shipper">
+          <option *ngFor="let item of _service.shippers" value={{item.value}}>{{item.name}}</option>
+        </select>
+      </div>
+      <label>Shipped Date</label>
+      <div class="col"><input type="date" name="ShippedDate" [ngModel]="data.shippedDate | date:'yyyy-MM-dd'" (ngModelChange)="data.shippedDate = $event"></div>
+      <label>Ship Region</label>
+      <div class="col"><input type="text" name="ShipRegion" [(ngModel)]="data.shipRegion"></div>
+    </div>
 
-  <div>
-    <label>Ship Country</label>
-    <div class="col"><input type="text" name="ShipCountry" [(ngModel)]="data.shipCountry"></div>
-    <label>Ship rCity</label>
-    <div class="col"><input type="text" name="ShipCity" [(ngModel)]="data.shipCity"></div>
-    <label>Ship Postal Code</label>
-    <div class="col"><input type="text" name="ShipPostalCode" [(ngModel)]="data.shipPostalCode"></div>
-  </div>
+    <div>
+      <label>Ship Country</label>
+      <div class="col"><input type="text" name="ShipCountry" [(ngModel)]="data.shipCountry"></div>
+      <label>Ship rCity</label>
+      <div class="col"><input type="text" name="ShipCity" [(ngModel)]="data.shipCity"></div>
+      <label>Ship Postal Code</label>
+      <div class="col"><input type="text" name="ShipPostalCode" [(ngModel)]="data.shipPostalCode"></div>
+    </div>
 
-  <div>
-    <label>Ship Address</label>
-    <div class="col"><input type="text" name="ShipAddress" [(ngModel)]="data.shipAddress"></div>
-    <label>Employee</label>
-    <div class="col"><input type="text" name="Employee" [(ngModel)]="data.employee" disabled="disabled"></div>
-    <label>Job Title</label>
-    <div class="col"><input type="text" name="JobTitle" [(ngModel)]="data.jobTitle" disabled="disabled"></div>
-  </div>
+    <div>
+      <label>Ship Address</label>
+      <div class="col"><input type="text" name="ShipAddress" [(ngModel)]="data.shipAddress"></div>
+      <label>Employee</label>
+      <div class="col"><input type="text" name="Employee" [(ngModel)]="data.employee" disabled="disabled"></div>
+      <label>Job Title</label>
+      <div class="col"><input type="text" name="JobTitle" [(ngModel)]="data.jobTitle" disabled="disabled"></div>
+    </div>
 
-  <div>
-    <label>Region</label>
-    <div class="col"><input type="text" name="Region" [(ngModel)]="data.region" disabled="disabled"></div>
-    <label>Country</label>
-    <div class="col"><input type="text" name="Country" [(ngModel)]="data.country" disabled="disabled"></div>
-    <label>City</label>
-    <div class="col"><input type="text" name="City" [(ngModel)]="data.city" disabled="disabled"></div>
-  </div>
+    <div>
+      <label>Region</label>
+      <div class="col"><input type="text" name="Region" [(ngModel)]="data.region" disabled="disabled"></div>
+      <label>Country</label>
+      <div class="col"><input type="text" name="Country" [(ngModel)]="data.country" disabled="disabled"></div>
+      <label>City</label>
+      <div class="col"><input type="text" name="City" [(ngModel)]="data.city" disabled="disabled"></div>
+    </div>
 
-  <div>
-    <label>Postal Code</label>
-    <div class="col"><input type="text" name="PostalCode" [(ngModel)]="data.postalCode" disabled="disabled"></div>
-    <label>Address</label>
-    <div class="col"><input type="text" name="Address" [(ngModel)]="data.address" disabled="disabled"></div>
-  </div>
-  <div style="text-align: center;">
-    <button type="button" mat-button (click)="onNoClick()">Cancel</button>
-    <button type="submit" mat-button>Update</button>
+    <div>
+      <label>Postal Code</label>
+      <div class="col"><input type="text" name="PostalCode" [(ngModel)]="data.postalCode" disabled="disabled"></div>
+      <label>Address</label>
+      <div class="col"><input type="text" name="Address" [(ngModel)]="data.address" disabled="disabled"></div>
+    </div>
+    <div style="text-align: center;">
+      <button color="primary" type="button" mat-raised-button (click)="onNoClick()">Cancel</button>
+      <button color="accent" type="submit" mat-raised-button>Update</button>
+    </div>
   </div>
 </form>
