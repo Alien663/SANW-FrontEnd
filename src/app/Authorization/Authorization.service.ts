@@ -35,7 +35,6 @@ export class AuthService {
     }
 
     logout(): void {
-        console.log("let me log outtttttt")
         this._http.callAPI("Member/logout", "POST")
         .subscribe( res => {
            this.isLoggedIn = false

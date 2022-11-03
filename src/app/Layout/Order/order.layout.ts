@@ -35,7 +35,6 @@ export class OrderLayout implements OnInit {
     }
 
     deleteOrder(OrderID : number){
-        console.log(OrderID)
         const _dia = this.dialog.open(AlertComponent, {
             width: '500px',
             data: "Are you sure about that?",

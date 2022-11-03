@@ -36,7 +36,6 @@ export class RegeistLayout {
     emailFormControl = new FormControl('', [Validators.required, Validators.email]);
 
     submitRegeist(){
-        console.log(this._pData)
         if(this.ValidateRegeistData()){
             this._http.callAPI("member/new", "PUT", this._pData)
             .subscribe((res:any) => {
@@ -47,7 +46,6 @@ export class RegeistLayout {
     }
 
     ValidateRegeistData(){
-        console.log("validate regeist data")
         if(!this._pData.Account){
             window.alert("Account cant not be empty")
             return false;

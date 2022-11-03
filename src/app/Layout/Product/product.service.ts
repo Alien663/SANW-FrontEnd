@@ -31,7 +31,6 @@ export class ProductService{
     constructor(private _http: APIService){}
 
     submitQuery() {
-        console.log(this.SearchCondition)
         this._http.callAPI("Product/gridview", "POST",{
             ...this.SearchCondition,
             Category : parseInt(this.SearchCondition.Category.toString()),
@@ -47,7 +46,6 @@ export class ProductService{
     }
 
     onPaginateChange(event: any) {
-        console.log("change page event")
         this.SearchCondition.page = event.pageIndex
         this.SearchCondition.pageSize = event.pageSize
         this.submitQuery()

@@ -33,7 +33,6 @@ export class OrderService{
             this.resData = res.data
             this.length = res.counts
             this.allColumns = Object.keys(this.resData[0])
-            console.log(this.resData)
         })
         this.showTable = true
         this.showResult = true;

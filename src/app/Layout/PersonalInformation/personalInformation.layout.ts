@@ -34,7 +34,6 @@ export class PersonalInformationLayout implements OnInit {
     }
     
     saveData(){
-        console.log(this._pdata)
         this.myapi.callAPI("Member/me", "POST", this._pdata)
         .subscribe(res => {
             window.alert("Update Personal Data Success")
